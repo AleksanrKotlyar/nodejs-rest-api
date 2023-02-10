@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const { DB_HOST, PORT = 5000 } = process.env;
 
-mongoose.set("strictQuery", true);
+mongoose.set("strictQuery", false);
 
 mongoose
 	.connect(DB_HOST)
