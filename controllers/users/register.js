@@ -12,7 +12,13 @@ const register = async (req, res) => {
 		throw new Conflict(`Email ${email} in use already`);
 	}
 
-	const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+	const hashPassword = bcrypt.hashSync(
+		password,
+		bcrypt.genSaltSync(10),
+		function (err) {
+			throw new Error(`Something went wrong, try again because of ${err}`);
+		}
+	);
 	const avatarURL = gravatar.url(email);
 
 	const result = await User.create({
