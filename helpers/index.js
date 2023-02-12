@@ -1,3 +1,7 @@
 const handleSchemaValidationErrors = require("./handleSchemaValidationErrors");
+const sendEmail = require("./sendEmail");
 
-module.exports = { handleSchemaValidationErrors };
+module.exports = {
+	handleSchemaValidationErrors,
+	sendEmail,
+};

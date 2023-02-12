@@ -1,6 +1,8 @@
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 
+const { sendEmail } = require("../../helpers");
 const { Conflict } = require("http-errors");
 const { User } = require("../../models");
 
@@ -21,12 +23,23 @@ const register = async (req, res) => {
 	);
 	const avatarURL = gravatar.url(email);
 
+	const verificationToken = uuidv4();
+
 	const result = await User.create({
 		email,
 		password: hashPassword,
 		subscription,
 		avatarURL,
+		verificationToken,
 	});
+
+	const mail = {
+		to: email,
+		subject: "Подтверждение регистрации",
+		text: "Перейти по ссылке для подтверждения email",
+		html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank">Перейти по ссылке для подтверждения email</a>`,
+	};
+	await sendEmail(mail);
 
 	res.status(200).json({
 		status: "success",

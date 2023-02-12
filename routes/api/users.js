@@ -16,6 +16,13 @@ router.post(
 	controllerWrapper(ctrl.register)
 );
 
+router.get("/verify/:verificationToken", controllerWrapper(ctrl.verifyEmail));
+router.post(
+	"/verify",
+	validation(schemas.verifyEmailSchema),
+	controllerWrapper(ctrl.verifyEmailResend)
+);
+
 router.post(
 	"/login",
 	validation(schemas.joiLoginSchema),
@@ -33,7 +40,7 @@ router.get("/logout", auth, controllerWrapper(ctrl.logout));
 router.patch(
 	"/",
 	auth,
-	validation(schemas.joiUpdateSubscription),
+	validation(schemas.joiUpdateSubscriptionSchema),
 	controllerWrapper(ctrl.updateSubscription)
 );
 router.patch(
